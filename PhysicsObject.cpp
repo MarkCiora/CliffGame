@@ -26,6 +26,7 @@ void PhysicsObject::PhysicsUpdate(const float& dt) {
 	}else{
 		//accumulate forces
 		if(gravity_on) force = force + gravity * mass;
+		force = force - vel * AIR_RES;
 		//torque = torque + 30.f;
 
 		//save old values
@@ -47,7 +48,7 @@ void PhysicsObject::PhysicsUpdate(const float& dt) {
 		//std::cout << force << std::endl;
 		//torque = 0;
 	}
-	//std::cout << acc << " " << vel << " " << pos << " " << dt << std::endl;
+	std::cout << acc << " " << vel << " " << pos << " " << dt << std::endl;
 }
 
 void PhysicsObject::CollisionUpdateAll(const float& dt){
@@ -202,19 +203,22 @@ void PhysicsObject::CollisionUpdateAll(const float& dt){
 			if((cur_point > 0) && (cur_point % 2 == 0)){
 				std::cout << "intersection" << std::endl;
 				for (auto it = 0; it < points.size(); it+=2){
+					auto p1 = points[it], p2 = points[it + 1];
 					VisualLine::AddLine(points[it], points[it+1]);
-					continue;
-					auto vec = (rot90 * (points[it] - points[it+1])).normalized();
-					auto scalar = 10000.f * dt;
-					if(Vec2::dot(vec, PO1.pos) > Vec2::dot(vec,PO2.pos)){//if PO1 center further
-						PO1.force = PO1.force + vec * scalar;
-						PO2.force = PO2.force - vec * scalar;
-						std::cout <<"ADADFDFADDAS";
-					}else{
-						PO1.force = PO1.force - vec * scalar;
-						PO2.force = PO2.force + vec * scalar;
-						std::cout << "AAAAAAAA";
+
+					//new technique
+					//if they are moving towards each other, trigger elastic collision
+					auto vel_diff = PO2.vel - PO1.vel, pos_diff = PO2.pos - PO1.pos;
+					if (Vec2::dot(vel_diff, pos_diff) > 0){
+						auto mass_sum = PO1.mass + PO2.mass, mass_diff = PO2.mass - PO1.mass;
+						auto temp = PO1.vel;
+						PO1.vel = temp * (-mass_diff / mass_sum) + 
+								PO2.vel * (2 * PO2.mass / mass_sum);
+						PO2.vel = temp * (2 * PO1.mass / mass_sum) +
+								PO2.vel * (mass_diff / mass_sum);
 					}
+					else continue;//otherwise do nothing
+					
 				}
 			}
 			else if(inside1[0] || inside1[1] || inside1[2] || inside1[3] ||
@@ -246,6 +250,7 @@ PhysicsObject::PhysicsObject(POType type = default_, Vec2 p = Vec2()) {
 		texture = Tex::rock1.t;
 		//is it static?
 		is_static = type == default_static;
+		gravity_on = false;
 
 		//width and height
 		width = 10.f;

@@ -17,6 +17,7 @@ class PhysicsObject
 {
 public:
 	constexpr static float PI = 3.141592654f;
+	constexpr static float AIR_RES = 1.f;
 	static unordered_map<int,PhysicsObject*> list;
 	static int next_pos;
 	static void PhysicsUpdateAll (const float&);
@@ -36,7 +37,7 @@ public:
 
 	bool is_static;
 	bool simulate_collisions;
-	bool gravity_on = false;
+	bool gravity_on = true;
 
 	float width, height;
 	int pixel_width, pixel_height;
