@@ -4,7 +4,7 @@ This will enetually be the source code to a game about building things along a c
 
 
 ## Playing, Testing & Contributing
-If you would like to run my code and test the game out, put an issue up and I can help you set up SDL if needed.
+If you would like to run my code and test the game out, put an issue up and I can direct you to resources to set up SDL2 or help you directly.
 
 
 ## Progress on the Game
