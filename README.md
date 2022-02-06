@@ -1,5 +1,6 @@
 # Cliff Game
 
+## Description
 Eventually this will be a game about building things along a cliff face. This project is done entirely in C++ with the SDL2 (Simple DirectMedia Layer 2) library.
 
 If you would like to run my code and test the game out, put an issue up and I can help you set up SDL if needed.
