@@ -35,6 +35,7 @@ public:
 	float collision_energy_ratio, max_radius;
 
 	bool is_static;
+	bool simulate_collisions;
 	bool gravity_on = false;
 
 	float width, height;

@@ -241,6 +241,7 @@ PhysicsObject::PhysicsObject(POType type = default_, Vec2 p = Vec2()) {
 	angle = ang_vel = ang_acc = torque = 0.f;
 	moment = 1.f;
 
+	simulate_collisions = true;
 	if(type == POType::default_static){
 		texture = Tex::rock1.t;
 		//is it static?
@@ -248,7 +249,7 @@ PhysicsObject::PhysicsObject(POType type = default_, Vec2 p = Vec2()) {
 
 		//width and height
 		width = 10.f;
-		height = 1.f;
+		height = 3.f;
 	}else{
 		texture = Tex::green16x16.t;
 		//is it static?
